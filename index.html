@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Task Selector</title>
+    </head>
+    <body>
+        <h1>Select a Task</h1>
+        <select id="taskSelector">
+            <option value="">--Select a task--</option>
+            <option value="task1">Task 1: String Manipulation</option>
+            <option value="task2">Task 2: Prime Numbers</option>
+        </select>
+        <div id="task1" style="display:none">
+            <h2>Task 1: String Manipulation</h2>
+            <label for="inputString">Enter a string:</label>
+            <input type="text" id="inputString">
+            <br><br>
+            <button onclick="calculateString()">Calculate</button>
+            <br><br>
+            <div id="stringOutput"></div>
+        </div>
+        <div id="task2" style="display:none">
+            <h2>Task 2: Prime Numbers</h2>
+            <label for="inputNumber">Enter the number of prime numbers you need:</label>
+            <input type="number" id="inputNumber">
+            <br><br>
+            <button onclick="calculatePrimes()">Calculate</button>
+            <br><br>
+            <div id="primeOutput"></div>
+        </div>
+    
+        <script>
+            const taskSelector = document.querySelector("#taskSelector");
+            const task1 = document.querySelector("#task1");
+            const task2 = document.querySelector("#task2");
+    
+            taskSelector.addEventListener("change", () => {
+                if (taskSelector.value === "task1") {
+                    task1.style.display = "block";
+                    task2.style.display = "none";
+                } else if (taskSelector.value === "task2") {
+                    task1.style.display = "none";
+                    task2.style.display = "block";
+                } else {
+                    task1.style.display = "none";
+                    task2.style.display = "none";
+                }
+            });
+    
+            function calculateString() {
+                const inputString = document.querySelector("#inputString").value;
+                let words = inputString.split(" ");
+                let totalWords = words.length;
+                let totalLetters = inputString.replace(/[^a-z]/gi, "").length;
+                let duplicates = inputString.toLowerCase().split("").sort().join("").match(/(.)\1+/g);
+                let totalDuplicates = duplicates ? duplicates.length : 0;
+                let noDuplicates = [...new Set(inputString)].join("");
+    
+                let stringOutput = document.querySelector("#stringOutput");
+                stringOutput.innerHTML = `
+                    <p>Total Words: ${totalWords}</p>
+                    <p>Total Letters: ${totalLetters}</p>
+                    <p>Total Duplicate Letters: ${totalDuplicates}</p>
+                    <p>String without Duplicates: ${noDuplicates}</p>
+                `;
+            }
+    
+            function calculatePrimes() {
+                const inputNumber = document.querySelector("#inputNumber").value;
+                let primes = [];
+                let num = 1000;
+    
+                while (primes.length < inputNumber) {
+                    let isPrime = true;
+    
+                    for (let i = 2; i <= Math.sqrt(num); i++) {
+                        if (num % i === 0) {
+                            isPrime = false;
+                            break;
+                        }
+                    }
+    
+                    if (isPrime) {
+                        primes.push(num);
+                    }
+    
+                    num++;
+                }
+    
+                let primeOutput = document.querySelector("#primeOutput");
+                primeOutput.innerHTML = `
+                    <ul>
+                        ${primes.map(prime => `<li>${prime}</li>`).join("")}
+                    </ul>
+                `;
+            }
+           </script>
+    
+</body>
+</html>
